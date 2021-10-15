@@ -2,8 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 
+const Setting = {
+  Genre: 'action',
+  Title: 'Very good movie',
+  Release: 2015,
+};
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+
+  <App
+    genre = {Setting.Genre}
+    title = {Setting.Title}
+    release ={Setting.Release}
+  />,
+
   document.getElementById('root'));
