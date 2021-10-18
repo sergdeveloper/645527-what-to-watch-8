@@ -1,7 +1,7 @@
 function MyListScreen (): JSX.Element{
-return(
-<>
-<div className="user-page">
+  return(
+
+    <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
           <a href="main.html" className="logo__link">
@@ -128,8 +128,7 @@ return(
         </div>
       </footer>
     </div>
-</>
-)
-};
+  );
+}
 
 export default MyListScreen;
