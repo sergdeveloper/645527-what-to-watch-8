@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-
-const Setting = {
-  Genre: 'action',
-  Title: 'Very good movie',
-  Release: 2015,
-};
+import  {movies, mainMovie}  from './mocks/films';
 
 ReactDOM.render(
 
   <App
-    genre = {Setting.Genre}
-    title = {Setting.Title}
-    release ={Setting.Release}
+    movieAdvert = {mainMovie}
+    movies = {movies}
   />,
 
   document.getElementById('root'));

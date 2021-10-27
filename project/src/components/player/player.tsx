@@ -1,9 +1,24 @@
-function PlayerScreen(): JSX.Element{
+import React from 'react';
+import { MovieMocks, MovieMock } from '../../types/movie';
+import {useParams, useHistory} from 'react-router-dom';
+
+type PlayerProps = {
+  movies: MovieMocks;
+}
+
+function PlayerScreen({movies}: PlayerProps): JSX.Element {
+  const history = useHistory();
+  const {id} = useParams<{id?: string}>();
+  const movie = movies.find((filmItem) => filmItem.id === Number(id)) || {} as MovieMock;
+
+  function onExitClick() {
+    history.goBack();
+  }
   return(
     <div className="player">
-      <video src="#" className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={movie.videoLink} className="player__video" poster="img/player-poster.jpg"></video>
 
-      <button type="button" className="player__exit">Exit</button>
+      <button type="button" className="player__exit" onClick={onExitClick}>Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">

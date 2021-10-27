@@ -8,23 +8,23 @@ import MyListScreen from '../my-list/my-list';
 import AddReviewScreen from '../addReview/addReview';
 import PlayerScreen from '../player/player';
 import PrivateRoute from '../private-route/private-route';
+import { MovieMocks, MovieMock } from '../../types/movie';
 
 
 type AppScreenProps = {
-  title: string;
-  genre: string;
-  release: number;
+  movieAdvert: MovieMock;
+  movies: MovieMocks;
 }
 
-function App({title, genre, release}: AppScreenProps): JSX.Element {
+function App({movieAdvert, movies}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen title ={title} genre = {genre} release= {release}/>
+          <MainScreen movies ={movies} movieAdvert = {movieAdvert}/>
         </Route>
         <Route exact path={AppRoute.Film}>
-          <MovieScreen/>
+          <MovieScreen movies={movies}/>
         </Route>
         <Route exact path={AppRoute.Login}>
           <SignInScreen/>
@@ -36,11 +36,15 @@ function App({title, genre, release}: AppScreenProps): JSX.Element {
           authorizationStatus={AuthorizationStatus.NoAuth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.AddReview}>
-          <AddReviewScreen/>
-        </Route>
+        <PrivateRoute
+          exact
+          path={AppRoute.AddReview}
+          render={() => <AddReviewScreen movies={movies} />}
+          authorizationStatus={AuthorizationStatus.Auth}
+        >
+        </PrivateRoute>
         <Route exact path={AppRoute.Player}>
-          <PlayerScreen/>
+          <PlayerScreen movies={movies}/>
         </Route>
         <Route
           render={() => (
