@@ -1,84 +1,17 @@
-import {useState, ChangeEvent} from 'react';
+import  React, {useState, ChangeEvent} from 'react';
+import RatingInputs from '../ratings/ratings';
 
 function ReviewForm(): JSX.Element {
   const [message, setMessage] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [rating, setRating] = useState(0);
+
+  const inputs =<RatingInputs />;
+
   return (
     <div className="add-review">
       <form action="#" className="add-review__form">
         <div className="rating">
-          <div className="rating__stars">
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="10"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="9"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="8"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="7"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="6"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="5"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="4"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="3"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="2"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="1"
-              onChange={ ({target}: ChangeEvent<HTMLInputElement>) => {
-                setRating(Number(target.value));
-              }}
-            />
-            <label className="rating__label" htmlFor="star-1">Rating 1</label>
-          </div>
+          <RatingInputs />
         </div>
 
         <div className="add-review__text">
