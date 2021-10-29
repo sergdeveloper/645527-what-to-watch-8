@@ -4,7 +4,6 @@ import RatingInputs from '../ratings/ratings';
 function ReviewForm(): JSX.Element {
   const [message, setMessage] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
   const inputs =<RatingInputs />;
 
   return (

@@ -1,20 +1,20 @@
 import {Comments} from '../types/comments';
 
- export const comments: Comments = [
-   {
-     id: 1,
-     user: {
-       id: 1,
-       name: 'Donald Duck',
-     },
-     rating: '8,0',
-     comment: 'Super film! super film. mega super film',
-     'date': '2019-05-08T14:13:56.569Z',
-   },
-   {
-     id: 2,
-     user: {
-       id: 2,
+export const comments: Comments = [
+  {
+    id: 1,
+    user: {
+      id: 1,
+      name: 'Donald Duck',
+    },
+    rating: '8,0',
+    comment: 'Super film! super film. mega super film',
+    'date': '2019-05-08T14:13:56.569Z',
+  },
+  {
+    id: 2,
+    user: {
+      id: 2,
       name: 'Mickey Mouse',
     },
     rating: '7,0',

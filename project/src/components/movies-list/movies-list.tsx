@@ -3,13 +3,13 @@ import MovieCard from '../movie-card/movie-card';
 import { MovieMocks } from '../../types/movie';
 
 type FilmsListProps = {
-  films: MovieMocks;
+  movies: MovieMocks;
 }
 
-function MoviesList({films}: FilmsListProps): JSX.Element {
+function MoviesList({movies}: FilmsListProps): JSX.Element {
   return (
     <div className="catalog__films-list">
-      {films.map((film) => <MovieCard movie={film} key={film.id} />)}
+      {movies.map((film) => <MovieCard movie={film} key={film.id} />)}
     </div>
   );
 }

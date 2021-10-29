@@ -110,7 +110,7 @@ function MainScreen({movieAdvert, movies}: MainScreenProps ): JSX.Element {
 
           <div className="catalog__films-list">
 
-            <MoviesList films={movies} />
+            <MoviesList movies={movies} />
 
           </div>
 
