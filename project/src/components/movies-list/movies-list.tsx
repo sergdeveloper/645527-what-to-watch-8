@@ -1,17 +1,38 @@
 import React from 'react';
 import MovieCard from '../movie-card/movie-card';
-import { MovieMocks } from '../../types/movie';
+import {MovieMocks} from '../../types/movie';
+import {bindActionCreators, Dispatch} from 'redux';
+import {connect, ConnectedProps} from 'react-redux';
+import {changeGenre as changeGenreState} from '../../store/action';
+import {filterMoviesByGenre as filterMoviesByGenreState} from '../../store/action';
+import {Actions} from '../../types/action';
+import {State} from '../../types/state';
 
-type FilmsListProps = {
-  movies: MovieMocks;
+type MoviesListProps = {
+  activeMovies: MovieMocks;
 }
 
-function MoviesList({movies}: FilmsListProps): JSX.Element {
+const mapStateToProps = ({genre, initialMovies, activeMovies}: State) => ({
+  genre,
+  initialMovies,
+  activeMovies,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => bindActionCreators({
+  onChangeGenre: changeGenreState,
+  onGetFilms: filterMoviesByGenreState,
+}, dispatch);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MoviesListProps;
+
+function MoviesList(props: ConnectedComponentProps): JSX.Element {
+  const {activeMovies} = props;
   return (
     <div className="catalog__films-list">
-      {movies.map((film) => <MovieCard movie={film} key={film.id} />)}
+      {activeMovies.map((movie) => <MovieCard movie={movie} key={movie.id} />)}
     </div>
   );
 }
 
-export default MoviesList;
+export {MoviesList};
+export default connector(MoviesList);

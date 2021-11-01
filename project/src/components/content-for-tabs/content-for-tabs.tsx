@@ -1,24 +1,18 @@
 import React from 'react';
 import {MovieMock} from '../../types/movie';
 import {Comments} from '../../types/comments';
-import FilmReview from '../movie-review/movie-review';
+import FilmReview, {getFormattedRuntime} from '../movie-review/movie-review';
 import {comments} from '../../mocks/comments';
+
 
 type TabContentProps = {
   movie: MovieMock;
   tabIndex: number;
 }
-const minutesInHour = 60;
+
 function TabContent({movie, tabIndex}: TabContentProps): JSX.Element {
   const starsString = movie.starring.slice(0, 3).join(', ');
-  const getFormattedRuntime = (durationInMinutes: number) => {
-    if (durationInMinutes >= minutesInHour) {
-      const hours = Math.floor(durationInMinutes / minutesInHour);
-      const minutes = (durationInMinutes) % minutesInHour;
-      const result = `${hours}h ${minutes}m`;
-      return result;
-    }
-  };
+
 
   if (tabIndex === 0) {
     return (
@@ -77,10 +71,9 @@ function TabContent({movie, tabIndex}: TabContentProps): JSX.Element {
       </div>
     );
   }
-  const firstHalfComments: Comments = comments.slice();
-  const secondHalfComments: Comments =
-    firstHalfComments.splice(Math.ceil(firstHalfComments.length/2), Math.floor(firstHalfComments.length/2));
-
+  const middleComments = Math.ceil(comments.length/2);
+  const firstHalfComments: Comments = comments.slice(0, middleComments);
+  const secondHalfComments: Comments = comments.slice(-middleComments);
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">

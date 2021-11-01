@@ -21,10 +21,9 @@ function Tabs({movie}: TabsProps): JSX.Element {
           {items.map((item, index) => (
             <li
               className={`film-nav__item ${index === active ? 'film-nav__item--active' : ''}`}
-              data-index={index}
               key={item.title}
-              onClick={(evt: any) => {
-                setActive(Number(evt.currentTarget.dataset.index));
+              onClick={(evt: React.MouseEvent<HTMLLIElement>) => {
+                setActive(Number(index));
               }}
             >
               <a className="film-nav__link">{item.title}</a>
