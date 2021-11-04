@@ -21,7 +21,7 @@ function App({movieAdvert, movies}: AppScreenProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen movies ={movies} movieAdvert = {movieAdvert}/>
+          <MainScreen movieAdvert = {movieAdvert}/>
         </Route>
         <Route exact path={AppRoute.Film}>
           <MovieScreen movies={movies}/>

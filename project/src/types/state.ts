@@ -4,4 +4,5 @@ export type State = {
   moviesList: MovieMocks,
   initialMovies: MovieMocks,
   activeMovies: MovieMocks,
+  showedMoviesId: number,
 };

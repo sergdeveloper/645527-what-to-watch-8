@@ -1,14 +1,13 @@
 import MoviesList from '../movies-list/movies-list';
-import { MovieMocks, MovieMock } from '../../types/movie';
+import {MovieMock } from '../../types/movie';
 import {Link} from 'react-router-dom';
 import GenreList from '../genre-list/genre-list';
 
 type MainScreenProps = {
   movieAdvert: MovieMock;
-  movies: MovieMocks;
 }
-
-function MainScreen({movieAdvert, movies}: MainScreenProps ): JSX.Element {
+function MainScreen(props: MainScreenProps): JSX.Element {
+  const {movieAdvert} = props;
   return (
     <>
       <section className="film-card">
@@ -53,7 +52,7 @@ function MainScreen({movieAdvert, movies}: MainScreenProps ): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <Link to={`player/${movieAdvert.id}`} >
+                <Link to={`player/${movieAdvert.id}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
@@ -78,9 +77,6 @@ function MainScreen({movieAdvert, movies}: MainScreenProps ): JSX.Element {
           <div className="catalog__films-list">
             <MoviesList />
           </div>
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
         </section>
 
         <footer className="page-footer">
@@ -100,4 +96,5 @@ function MainScreen({movieAdvert, movies}: MainScreenProps ): JSX.Element {
     </>
   );
 }
+
 export default MainScreen;
