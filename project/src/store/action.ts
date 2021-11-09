@@ -1,14 +1,35 @@
-import {ActionType, ChangeGenreAction, FilterMoviesByGenreAction, ViewMoreMoviesAction, ResetMoviesListAction} from '../types/action';
-export const changeGenre = (genre: string): ChangeGenreAction => ({
+import {ActionType} from '../types/action';
+import {AuthorizationStatus} from '../const';
+import { ServerMovies, ServerMovie } from '../types/movie';
+export const changeGenre = (genre: string) => ({
   type: ActionType.ChangeGenre,
   payload: genre,
-});
-export const filterMoviesByGenre = (): FilterMoviesByGenreAction => ({
+} as const);
+export const filterMoviesByGenre = () => ({
   type: ActionType.FilterMoviesByGenre,
-});
-export const showMoreMovies = (): ViewMoreMoviesAction => ({
+} as const);
+export const showMoreMovies = () => ({
   type: ActionType.ViewMoreMovies,
-});
-export const resetMoviesList = (): ResetMoviesListAction => ({
+} as const);
+export const resetMoviesList = () => ({
   type: ActionType.ResetMoviesList,
-});
+} as const);
+export const loadMovies = (movies: ServerMovies) => ({
+  type: ActionType.LoadMovies,
+  payload: {
+    movies,
+  },
+} as const);
+export const requireAuthorization = (authStatus: AuthorizationStatus) => ({
+  type: ActionType.RequireAuthorization,
+  payload: authStatus,
+} as const);
+export const loadPromoMovie = (promoMovie: ServerMovie) => ({
+  type: ActionType.LoadPromoMovie,
+  payload: {
+    promoMovie,
+  },
+} as const);
+export const requireLogout = () => ({
+  type: ActionType.RequireLogout,
+} as const);

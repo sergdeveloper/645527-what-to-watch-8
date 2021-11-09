@@ -1,8 +1,11 @@
-import {MovieMocks} from '../types/movie';
+import {MovieMocks, MovieMock} from '../types/movie';
+import {AuthorizationStatus} from '../const';
 export type State = {
   genre: string,
-  moviesList: MovieMocks,
   initialMovies: MovieMocks,
   activeMovies: MovieMocks,
   showedMoviesId: number,
+  promoMovie: MovieMock,
+  authorizationStatus: AuthorizationStatus,
+  isDataLoaded: boolean,
 };

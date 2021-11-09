@@ -1,13 +1,17 @@
 import {ActionType, Actions} from '../types/action';
 import {State} from '../types/state';
-import {movies} from '../mocks/films';
+import {MovieMock, MovieMocks, ServerMovie} from '../types/movie';
+import {AuthorizationStatus, emptyMovie} from '../const';
+import { adaptToClient } from '../utils';
 const MOVIES_PER_STEP = 8;
 const initialState = {
   genre: 'All genres',
-  moviesList: movies,
-  initialMovies: movies,
-  activeMovies: movies,
+  initialMovies: [],
+  activeMovies: [],
   showedMoviesId: MOVIES_PER_STEP,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isDataLoaded: false,
+  promoMovie: emptyMovie,
 };
 const reducer = (state: State = initialState, action: Actions): State => {
   switch (action.type) {
@@ -17,11 +21,26 @@ const reducer = (state: State = initialState, action: Actions): State => {
       return {...state, genre: action.payload, showedMoviesId: initialState.showedMoviesId};
     case ActionType.FilterMoviesByGenre:
       if (state.genre === initialState.genre) {
-        return {...state, activeMovies: initialState.initialMovies};
+        return {...state, activeMovies: state.initialMovies};
       }
-      return {...state, activeMovies: initialState.initialMovies.filter((movie) => movie.genre === state.genre)};
+      return {...state, activeMovies: state.initialMovies.filter((movie: MovieMock) => movie.genre === state.genre)};
     case ActionType.ViewMoreMovies:
       return {...state, showedMoviesId: state.showedMoviesId + MOVIES_PER_STEP};
+    case ActionType.LoadPromoMovie: {
+      const {promoMovie} = action.payload;
+      const adaptedPromoMovie = adaptToClient(promoMovie);
+      return {...state, promoMovie: adaptedPromoMovie};
+    }
+    case ActionType.RequireAuthorization:
+      return {...state, authorizationStatus: action.payload, isDataLoaded: true,
+      };
+    case ActionType.LoadMovies:{
+      const {movies} = action.payload;
+      const adaptedMovies: MovieMocks = movies.map((movie: ServerMovie) => adaptToClient(movie));
+      return {...state, initialMovies: adaptedMovies, activeMovies: adaptedMovies};
+    }
+    case ActionType.RequireLogout:
+      return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
     default:
       return state;
   }
