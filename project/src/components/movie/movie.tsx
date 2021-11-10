@@ -2,6 +2,8 @@ import { MovieMocks, MovieMock } from '../../types/movie';
 import {useParams, Link} from 'react-router-dom';
 import Tabs from '../tabs/tabs';
 import SimilarMoviesList from '../similar-list/similar-list';
+import UserBlock from '../user/user';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 type MovieScreenProps = {
   movies: MovieMocks;
@@ -10,6 +12,11 @@ type MovieScreenProps = {
 function MovieScreen({movies}: MovieScreenProps): JSX.Element {
 
   const {id} = useParams<{id?: string}>();
+  if (movies.length === 0) {
+    return (
+      <LoadingScreen />
+    );
+  }
   const movie = movies.find((filmItem) => filmItem.id === Number(id)) || {} as MovieMock;
 
   return(
@@ -17,7 +24,7 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={movie.previewImage} alt={movie.name} />
+            <img src={movie.backgroundImage} alt={movie.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -30,17 +37,7 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
                 <span className="logo__letter logo__letter--3">W</span>
               </a>
             </div>
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock />
           </header>
 
           <div className="film-card__wrap">

@@ -2,6 +2,7 @@ import MoviesList from '../movies-list/movies-list';
 import {MovieMock } from '../../types/movie';
 import {Link} from 'react-router-dom';
 import GenreList from '../genre-list/genre-list';
+import UserBlock from '../user/user';
 
 type MainScreenProps = {
   movieAdvert: MovieMock;
@@ -12,7 +13,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={movieAdvert.posterImage} alt={movieAdvert.name} />
+          <img src={movieAdvert.backgroundImage} alt={movieAdvert.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -25,17 +26,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
               <span className="logo__letter logo__letter--3">W</span>
             </a>
           </div>
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock/>
         </header>
 
         <div className="film-card__wrap">

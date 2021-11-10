@@ -11,13 +11,14 @@ import {Provider} from 'react-redux';
 import App from './components/app/app';
 import {reducer} from './store/reducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import {redirect} from './store/middlewares/redirect';
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
 );
 const store = createStore(
   reducer,
   composeWithDevTools(
-    applyMiddleware(thunk.withExtraArgument(api)),
+    applyMiddleware(thunk.withExtraArgument(api), redirect),
   ),
 );
 (store.dispatch as ThunkAppDispatch)(checkAuthAction());
