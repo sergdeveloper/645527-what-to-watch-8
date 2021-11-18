@@ -11,7 +11,10 @@ const initialState = {
   showedMoviesId: MOVIES_PER_STEP,
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoaded: false,
+  similarMovies: [],
+  comments: [],
   promoMovie: emptyMovie,
+  currentMovie: emptyMovie,
 };
 const reducer = (state: State = initialState, action: Actions): State => {
   switch (action.type) {
@@ -30,6 +33,20 @@ const reducer = (state: State = initialState, action: Actions): State => {
       const {promoMovie} = action.payload;
       const adaptedPromoMovie = adaptToClient(promoMovie);
       return {...state, promoMovie: adaptedPromoMovie};
+    }
+    case ActionType.LoadCurrentMovie: {
+      const {currentFilm} = action.payload;
+      const adaptedCurrentMovie = adaptToClient(currentFilm);
+      return {...state, currentMovie: adaptedCurrentMovie};
+    }
+    case ActionType.LoadSimilarMovies: {
+      const {similarMovies} = action.payload;
+      const adaptedSimilarMovies = similarMovies.map((similarMovie: ServerMovie) => adaptToClient(similarMovie));
+      return {...state, similarMovies: adaptedSimilarMovies};
+    }
+    case ActionType.LoadComments: {
+      const {comments} = action.payload;
+      return {...state, comments: comments};
     }
     case ActionType.RequireAuthorization:
       return {...state, authorizationStatus: action.payload, isDataLoaded: true,

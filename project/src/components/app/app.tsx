@@ -37,7 +37,7 @@ function App(props: PropsFromRedux): JSX.Element {
           <MainScreen movieAdvert = {promoMovie}/>
         </Route>
         <Route exact path={AppRoute.Film}>
-          <MovieScreen movies={initialMovies}/>
+          <MovieScreen />
         </Route>
         <Route exact path={AppRoute.Login}>
           <SignInScreen/>
@@ -51,7 +51,7 @@ function App(props: PropsFromRedux): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.AddReview}
-          render={() => <AddReviewScreen movies={initialMovies} />}
+          render={() => <AddReviewScreen />}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Player}>

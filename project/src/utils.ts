@@ -22,3 +22,17 @@ export const adaptToClient = (movie: ServerMovie): MovieMock => {
   };
   return adaptedFilm;
 };
+export const getMovieRating = (mark: string | number): string => {
+  mark = Number(mark);
+  if (mark < 3) {
+    return 'Bad';
+  } else if (mark < 5) {
+    return 'Normal';
+  } else if (mark < 8) {
+    return 'Good';
+  } else if (mark < 10) {
+    return 'Very Good';
+  } else {
+    return 'Awesome';
+  }
+};

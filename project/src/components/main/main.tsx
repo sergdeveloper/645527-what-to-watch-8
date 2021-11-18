@@ -3,12 +3,20 @@ import {MovieMock } from '../../types/movie';
 import {Link} from 'react-router-dom';
 import GenreList from '../genre-list/genre-list';
 import UserBlock from '../user/user';
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {fetchMovieAction, fetchPromoMovieAction} from '../../store/api-actions';
 
 type MainScreenProps = {
   movieAdvert: MovieMock;
 }
 function MainScreen(props: MainScreenProps): JSX.Element {
   const {movieAdvert} = props;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchMovieAction());
+    dispatch(fetchPromoMovieAction());
+  }, [dispatch]);
   return (
     <>
       <section className="film-card">

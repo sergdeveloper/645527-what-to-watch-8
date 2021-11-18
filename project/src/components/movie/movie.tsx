@@ -1,23 +1,55 @@
-import { MovieMocks, MovieMock } from '../../types/movie';
+import React, {useEffect} from 'react';
+import { MovieMock, ServerMovie } from '../../types/movie';
 import {useParams, Link} from 'react-router-dom';
 import Tabs from '../tabs/tabs';
 import SimilarMoviesList from '../similar-list/similar-list';
 import UserBlock from '../user/user';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { connect, ConnectedProps} from 'react-redux';
+import {fetchCurrentMovieAction, fetchSimilarMoviesAction, fetchReviewsAction} from '../../store/api-actions';
+import {ThunkAppDispatch} from '../../types/action';
+import { State } from '../../types/state';
+import {AuthorizationStatus} from '../../const';
 
-type MovieScreenProps = {
-  movies: MovieMocks;
-}
+const mapStateToProps = ({currentMovie, similarMovies, comments, authorizationStatus}: State) => ({
+  currentMovie,
+  similarMovies,
+  comments,
+  authorizationStatus,
+});
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentMovie(id: number) {
+    dispatch(fetchCurrentMovieAction(id));
+  },
+  fetchSimilarMovies(id: number) {
+    dispatch(fetchSimilarMoviesAction(id));
+  },
+  fetchReviews(id: number) {
+    dispatch(fetchReviewsAction(id));
+  },
+});
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux;
 
-function MovieScreen({movies}: MovieScreenProps): JSX.Element {
-
-  const {id} = useParams<{id?: string}>();
-  if (movies.length === 0) {
+function MovieScreen(props: ConnectedComponentProps): JSX.Element {
+  const {fetchCurrentMovie, fetchSimilarMovies, currentMovie, fetchReviews, similarMovies, comments, authorizationStatus} = props;
+  const id = +(useParams<{id: string}>().id);
+  const movie: MovieMock | ServerMovie = currentMovie;
+  useEffect(() => {
+    fetchCurrentMovie(id);
+  }, [fetchCurrentMovie, id]);
+  useEffect(() => {
+    fetchSimilarMovies(id);
+  }, [fetchSimilarMovies, id]);
+  useEffect(() => {
+    fetchReviews(id);
+  }, [fetchReviews, id]);
+  if (movie.id === 0) {
     return (
       <LoadingScreen />
     );
   }
-  const movie = movies.find((filmItem) => filmItem.id === Number(id)) || {} as MovieMock;
 
   return(
     <>
@@ -61,7 +93,8 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </Link>
-                <Link to={`/films/${movie.id}/review`} className="btn film-card__button">Add review</Link>
+                {authorizationStatus === AuthorizationStatus.Auth
+                  ? <Link to={`/films/${movie.id}/review`} className="btn film-card__button">Add review</Link>: ''}
               </div>
             </div>
           </div>
@@ -72,7 +105,7 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
             <div className="film-card__poster film-card__poster--big">
               <img src={movie.previewImage} alt={movie.name} width="218" height="327" />
             </div>
-            <Tabs movie={movie} />
+            <Tabs movie={movie} comments={comments}/>
           </div>
         </div>
       </section>
@@ -80,7 +113,7 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <SimilarMoviesList movies={movies} currentMovie={movie}/>
+          <SimilarMoviesList movies={similarMovies} currentMovie={movie}/>
         </section>
 
         <footer className="page-footer">
@@ -100,4 +133,5 @@ function MovieScreen({movies}: MovieScreenProps): JSX.Element {
     </>
   );
 }
-export default MovieScreen;
+export {MovieScreen};
+export default connector(MovieScreen);

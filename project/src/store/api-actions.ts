@@ -1,9 +1,11 @@
 import {ThunkActionResult} from '../types/action';
-import {loadMovies, requireAuthorization, requireLogout, loadPromoMovie, redirectToRoute} from './action';
+import {loadMovies, requireAuthorization, requireLogout, loadPromoMovie, loadComments, redirectToRoute, loadCurrentMovie, loadSimilarMovies} from './action';
 import {saveToken, dropToken, Token} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {ServerMovie} from '../types/movie';
 import {AuthData} from '../types/auth-data';
+import {Comments} from '../types/comments';
+import {AddComment} from '../types/add-comment';
 
 export const fetchMovieAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -15,6 +17,16 @@ export const fetchPromoMovieAction = (): ThunkActionResult =>
     const {data} = await api.get<ServerMovie>(APIRoute.PromoMovie);
     dispatch(loadPromoMovie(data));
   };
+export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<ServerMovie[]>(APIRoute.SimilarMovies.replace(':id', id.toString()));
+    dispatch(loadSimilarMovies(data));
+  };
+export const fetchReviewsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Comments>(APIRoute.Review.replace(':id', id.toString()));
+    dispatch(loadComments(data));
+  };
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const result: any = await api.get(APIRoute.Login);
@@ -23,12 +35,21 @@ export const checkAuthAction = (): ThunkActionResult =>
       dispatch(redirectToRoute(AppRoute.Main));
     }
   };
+export const fetchCurrentMovieAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<ServerMovie>(`${APIRoute.CurrentMovie}${id}`);
+    dispatch(loadCurrentMovie(data));
+  };
+export const addCommentAction = (id: number, comment: AddComment): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.post<Comments>(APIRoute.Review.replace(':id', id.toString()), comment);
+    dispatch(loadComments(data));
+  };
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const {data: {token}} = await api.post<{token: Token}>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(AppRoute.Main));
   };
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {

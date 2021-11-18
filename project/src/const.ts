@@ -1,17 +1,23 @@
 export enum AppRoute {
   Login = '/login',
   MyList = '/mylist',
-  Film = '/films:id',
+  Film = '/films/:id',
   AddReview = '/films/:id/review',
-  Player = '/plyerid',
+  Player = '/player/:id',
   Main = '/',
+  NotFound = '/404',
 }
+
+export const SIMILAR_MOVIES_COUNT = 4;
 
 export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',
   PromoMovie = '/promo',
+  Review = '/comments/:id',
+  CurrentMovie = '/films/',
+  SimilarMovies = '/films/:id/similar',
 }
 
 export enum AuthorizationStatus {

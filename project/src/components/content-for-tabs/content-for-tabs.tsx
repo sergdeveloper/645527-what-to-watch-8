@@ -2,25 +2,22 @@ import React from 'react';
 import {MovieMock} from '../../types/movie';
 import {Comments} from '../../types/comments';
 import FilmReview, {getFormattedRuntime} from '../movie-review/movie-review';
-import {comments} from '../../mocks/comments';
-
+import {getMovieRating} from '../../utils';
 
 type TabContentProps = {
   movie: MovieMock;
   tabIndex: number;
+  comments: Comments;
 }
-
-function TabContent({movie, tabIndex}: TabContentProps): JSX.Element {
+function TabContent({movie, tabIndex, comments}: TabContentProps): JSX.Element {
   const starsString = movie.starring.slice(0, 3).join(', ');
-
-
   if (tabIndex === 0) {
     return (
       <React.Fragment>
         <div className="film-rating">
           <div className="film-rating__score">{movie.rating}</div>
           <p className="film-rating__meta">
-            <span className="film-rating__level">Very good</span>
+            <span className="film-rating__level">{getMovieRating(movie.rating)}</span>
             <span className="film-rating__count">{movie.scoresCount} ratings</span>
           </p>
         </div>
@@ -71,18 +68,20 @@ function TabContent({movie, tabIndex}: TabContentProps): JSX.Element {
       </div>
     );
   }
-  const middleComments = Math.ceil(comments.length/2);
-  const firstHalfComments: Comments = comments.slice(0, middleComments);
-  const secondHalfComments: Comments = comments.slice(-middleComments);
+  const oddComments: Comments = [];
+  const evenComments: Comments = [];
+  comments.map((comment, index) => {
+    index % 2 === 0 ? oddComments.push(comment) : evenComments.push(comment);
+  });
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
-        {firstHalfComments.map((comment) => (
-          <FilmReview review={comment} key={comment.id}/>
+        {oddComments.map((review) => (
+          <FilmReview review={review} key={review.id}/>
         ))}
       </div>
       <div className="film-card__reviews-col">
-        {secondHalfComments.map((comment) => (
+        {evenComments.map((comment) => (
           <FilmReview review={comment} key={comment.id}/>
         ))}
       </div>

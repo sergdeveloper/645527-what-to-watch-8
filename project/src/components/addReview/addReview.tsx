@@ -1,17 +1,42 @@
-import React from 'react';
-import { MovieMocks, MovieMock } from '../../types/movie';
+import {useEffect} from 'react';
 import {useParams, Link} from 'react-router-dom';
 import ReviewForm from '../review-form/review-form';
+import {connect, ConnectedProps} from 'react-redux';
+import {State} from '../../types/state';
+import {AddComment as AddReviewType} from '../../types/add-comment';
+import {addCommentAction, fetchCurrentMovieAction} from '../../store/api-actions';
+import {ThunkAppDispatch} from '../../types/action';
+import LoadingScreen from '../loading-screen/loading-screen';
 
+const mapStateToProps = ({currentMovie}: State) => ({
+  currentMovie,
+});
 
-type AddReviewProps = {
-  movies: MovieMocks;
-}
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentMovie(id: number) {
+    dispatch(fetchCurrentMovieAction(id));
+  },
+  addReview(id: number, review: AddReviewType) {
+    return dispatch(addCommentAction(id, review));
+  },
+});
 
-function AddReviewScreen({movies}: AddReviewProps): JSX.Element {
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-  const {id} = useParams<{id?: string}>();
-  const movie = movies.find((filmItem) => filmItem.id === Number(id)) || {} as MovieMock;
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux;
+
+function AddReviewScreen({currentMovie, addReview, fetchCurrentMovie}: ConnectedComponentProps): JSX.Element {
+  const movie = currentMovie;
+  const id = +(useParams<{ id: string }>().id);
+  useEffect(() => {
+    fetchCurrentMovie(id);
+  }, [fetchCurrentMovie, id]);
+  if (!movie) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return(
     <section className="film-card film-card--full">
       <div className="film-card__hero">
@@ -54,9 +79,10 @@ function AddReviewScreen({movies}: AddReviewProps): JSX.Element {
           <img src={movie.previewImage} alt={movie.name} width="218" height="327" />
         </div>
       </div>
-      <ReviewForm />
+      <ReviewForm onSubmit={(comment) => addReview(id, comment)}/>
     </section>
   );
 }
 
-export default AddReviewScreen;
+export {AddReviewScreen};
+export default connector(AddReviewScreen);
